@@ -94,21 +94,21 @@ CREATE TABLE Subject(
     room_number INTEGER,
     lecturer_id INTEGER FOREIGN KEY REFERENCES SOS_User,
     department_id INTEGER FOREIGN KEY REFERENCES Department
-)
+);
 
 CREATE TABLE Class(
     id INTEGER IDENTITY PRIMARY KEY,
     subject_id INTEGER FOREIGN KEY REFERENCES Subject,
     start_date datetime,
     end_date datetime
-)
+);
 
 CREATE TABLE Student_Subject(
     id INTEGER IDENTITY PRIMARY KEY,
     student_id INTEGER FOREIGN KEY REFERENCES SOS_User,
     subject_id INTEGER FOREIGN KEY REFERENCES Subject,
     registration_time datetime
-)
+);
 
 
 CREATE TABLE Grade(
@@ -117,5 +117,5 @@ CREATE TABLE Grade(
     grade DECIMAL(2,1),
     type varchar,
     grading_date datetime
-    )
+    );
 
