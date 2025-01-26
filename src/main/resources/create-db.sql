@@ -1,6 +1,4 @@
 
--- DROP TABLE IF EXISTS Registration_Code;
--- DROP TABLE IF EXISTS NUMER_ALBUMU;
 DROP TABLE IF EXISTS Grade;
 DROP TABLE IF EXISTS Student_Subject;
 DROP TABLE IF EXISTS Class;
@@ -15,27 +13,10 @@ DROP TABLE IF EXISTS Address;
 DROP TABLE IF EXISTS Library_Item;
 
 
--- CREATE TABLE Registration_Code(
---     id INTEGER IDENTITY PRIMARY KEY,
---     code varchar
--- );
-
 CREATE TABLE Library_Item(
     id INTEGER IDENTITY PRIMARY KEY,
     quantity INTEGER
 );
-
--- CREATE TABLE Numer_Albumu(
---     id INTEGER IDENTITY PRIMARY KEY,
---     numer_albumu varchar,
---     wazny Boolean,
---     użytkownik_id INTEGEReger,
--- );
-
--- CREATE TABLE Payment_Type(
---    id INTEGER IDENTITY PRIMARY KEY,
---    type varchar
--- );
 
 
 CREATE TABLE Address(
@@ -62,7 +43,6 @@ CREATE TABLE SOS_User(
     blocked_account boolean,
     block_time datetime
 );
---CREATE TABLE Reset_Hasla()
 
 CREATE TABLE Payment(
                         id INTEGER IDENTITY PRIMARY KEY,
