@@ -1,7 +1,8 @@
 
 DROP TABLE IF EXISTS Grade;
+
 DROP TABLE IF EXISTS Student_Subject;
-DROP TABLE IF EXISTS Class;
+DROP TABLE IF EXISTS University_Class;
 DROP TABLE IF EXISTS Subject;
 DROP TABLE IF EXISTS SOS_Role;
 DROP TABLE IF EXISTS Department;
@@ -37,7 +38,7 @@ CREATE TABLE SOS_User(
     accepted_terms_of_use boolean DEFAULT false NOT NULL ,
     name varchar NOT NULL,
     surname varchar NOT NULL,
-    registered_address INTEGER FOREIGN KEY REFERENCES ADDRESS,
+    registered_address INTEGER NOT NULL FOREIGN KEY REFERENCES ADDRESS,
     residential_address INTEGER FOREIGN KEY REFERENCES ADDRESS,
     correspondence_address INTEGER FOREIGN KEY REFERENCES ADDRESS,
     blocked_account boolean DEFAULT false NOT NULL,
@@ -46,7 +47,7 @@ CREATE TABLE SOS_User(
 
 CREATE TABLE Payment(
                         id INTEGER IDENTITY PRIMARY KEY,
-                        student_id INTEGER FOREIGN KEY REFERENCES SOS_User,
+                        student_id INTEGER NOT NULL FOREIGN KEY REFERENCES SOS_User,
                         type varchar NOT NULL,
                         amount DECIMAL(10,2) NOT NULL
 );
@@ -55,16 +56,16 @@ CREATE TABLE Reservation(
       id INTEGER IDENTITY PRIMARY KEY,
       reservation_dare date NOT NULL,
       reservation_status varchar NOT NULL,
-      user_id INTEGER FOREIGN KEY REFERENCES SOS_User,
-      library_item_id INTEGER FOREIGN KEY REFERENCES Library_Item,
+      user_id INTEGER FOREIGN NOT NULL KEY REFERENCES SOS_User,
+      library_item_id INTEGER NOT NULL FOREIGN KEY REFERENCES Library_Item,
 );
 
 CREATE TABLE Lending(
        id INTEGER IDENTITY PRIMARY KEY,
        lending_date date NOT NULL,
        return_date varchar,
-       user_id INTEGER FOREIGN KEY REFERENCES SOS_User,
-       library_item_id INTEGER FOREIGN KEY REFERENCES Library_Item,
+       user_id INTEGER NOT NULL FOREIGN KEY REFERENCES SOS_User,
+       library_item_id INTEGER NOT NULL FOREIGN KEY REFERENCES Library_Item,
 );
 
 
@@ -75,7 +76,7 @@ CREATE TABLE Department(
 
 CREATE TABLE SOS_Role(
     id INTEGER IDENTITY PRIMARY KEY,
-    department_id INTEGER FOREIGN KEY REFERENCES Department,
+    department_id INTEGER NOT NULL FOREIGN KEY REFERENCES Department,
     name varchar NOT NULL,
     is_admin BOOLEAN DEFAULT false NOT NULL
 );
@@ -93,27 +94,27 @@ CREATE TABLE Subject(
     registration_end datetime NOT NULL,
     room_number INTEGER NOT NULL,
     lecturer_id INTEGER FOREIGN KEY REFERENCES SOS_User,
-    department_id INTEGER FOREIGN KEY REFERENCES Department
+    department_id INTEGER NOT NULL FOREIGN KEY REFERENCES Department
 );
 
-CREATE TABLE Class(
+CREATE TABLE University_Class(
     id INTEGER IDENTITY PRIMARY KEY,
-    subject_id INTEGER FOREIGN KEY REFERENCES Subject,
+    subject_id INTEGER NOT NULL FOREIGN KEY REFERENCES Subject,
     start_date datetime NOT NULL,
     end_date datetime NOT NULL
 );
 
 CREATE TABLE Student_Subject(
     id INTEGER IDENTITY PRIMARY KEY,
-    student_id INTEGER FOREIGN KEY REFERENCES SOS_User,
-    subject_id INTEGER FOREIGN KEY REFERENCES Subject,
+    student_id INTEGER NOT NULL FOREIGN KEY REFERENCES SOS_User,
+    subject_id INTEGER NOT NULL FOREIGN KEY REFERENCES Subject,
     registration_time datetime
 );
 
 
 CREATE TABLE Grade(
     id INTEGER IDENTITY PRIMARY KEY,
-    student_subject_id INTEGER FOREIGN KEY REFERENCES Student_Subject,
+    student_subject_id INTEGER NOT NULL FOREIGN KEY REFERENCES Student_Subject,
     grade DECIMAL(2,1) NOT NULL,
     type varchar NOT NULL,
     grading_date datetime NOT NULL
