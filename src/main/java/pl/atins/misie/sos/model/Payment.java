@@ -1,11 +1,15 @@
 package pl.atins.misie.sos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name="Payment")
+@Getter
+@Setter
 public class Payment {
     @Id
     @Column(name="id")

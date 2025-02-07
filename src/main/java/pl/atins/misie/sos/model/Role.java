@@ -1,9 +1,13 @@
 package pl.atins.misie.sos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="SOS_Role")
+@Getter
+@Setter
 public class Role   {
     @Id
     @Column(name="id")
