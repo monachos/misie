@@ -8,13 +8,14 @@ import lombok.Setter;
 @Table(name="SOS_Role")
 @Getter
 @Setter
-public class Role   {
+public class Role {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     public Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="department_id", nullable=false)
-    @ManyToOne(optional=false)
     private Department department;
 
     @Column(name="name", nullable=false)
