@@ -1,11 +1,15 @@
 package pl.atins.misie.sos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="SOS_User")
+@Getter
+@Setter
 public class User {
     @Id
     @Column(name="id")

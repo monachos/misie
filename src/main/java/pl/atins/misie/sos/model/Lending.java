@@ -1,11 +1,15 @@
 package pl.atins.misie.sos.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="Lending")
+@Getter
+@Setter
 public class Lending {
     @Id
     @Column(name="id")
