@@ -10,11 +10,11 @@ public interface LibraryItemDao {
 
     List<LibraryItem> findAll();
 
-    void save(LibraryItem address);
+    void save(LibraryItem libraryItem);
 
-    void delete(LibraryItem address);
+    void delete(LibraryItem libraryItem);
 
-    void update(LibraryItem address);
+    void update(LibraryItem libraryItem);
 
     void deleteAll();
 
