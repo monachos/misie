@@ -46,7 +46,10 @@ public class TestLibraryItemDaoImpl {
         item.setQuantity(15);
         libraryItemDao.save(item);
 
-        Assert.assertNotNull(libraryItemDao.findById(item.getId()));
+        LibraryItem retrievedItem = libraryItemDao.findById(item.getId());
+        Assert.assertNotNull(retrievedItem);
+        Assert.assertEquals(item.getId(), retrievedItem.getId());
+        Assert.assertEquals(item.getQuantity(), retrievedItem.getQuantity());
     }
 
     @Test
