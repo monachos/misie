@@ -51,15 +51,27 @@ public class TestPaymentDaoImpl {
     @Test
     public void testSave() {
         Payment payment = new Payment();
-        payment.setStudent(new User());
+        User student = new User();
+        student.setId(1);
+
+        payment.setStudent(student);
         payment.setType("Credit");
         payment.setAmount(new BigDecimal("200.00"));
 
         paymentDao.save(payment);
 
         List<Payment> payments = paymentDao.findAll();
-        Assert.assertFalse(payments.isEmpty());
+
+        Assert.assertEquals(1, payments.size());
+
+        Payment savedPayment = payments.get(0);
+
+        Assert.assertEquals("Credit", savedPayment.getType());
+        Assert.assertEquals(new BigDecimal("200.00"), savedPayment.getAmount());
+        Assert.assertNotNull(savedPayment.getStudent());
+        Assert.assertEquals(1, savedPayment.getStudent().getId().intValue());
     }
+
 
     @Test
     public void testUpdate() {
