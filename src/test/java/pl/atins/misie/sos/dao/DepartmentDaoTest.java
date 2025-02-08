@@ -54,6 +54,7 @@ public class DepartmentDaoTest {
         departmentDao.save(department);
 
         final Department result = assertAndGetExactlyOneRecord();
+        Assert.assertTrue(result.getId() > 0);
         Assert.assertEquals("NewDep", result.getName());
     }
 
