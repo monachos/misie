@@ -1,22 +1,25 @@
 package pl.atins.misie.sos.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name="Address")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    public Integer id;
+    private Integer id;
 
     @Column(name="address_line_1", nullable=false)
-    public String addressLine1;
+    private String addressLine1;
 
     @Column(name="address_line_2")
-    public String addressLine2;
+    private String addressLine2;
+
+
 }

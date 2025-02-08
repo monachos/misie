@@ -18,8 +18,8 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.hsqldb.jdbc.JDBCDriver"/>
-        <property name="url" value="jdbc:hsqldb:file:./data/sos_tests;shutdown=true"/>
-        <property name="username" value="sa"/>
+        <property name="url" value="jdbc:hsqldb:file:./data/sos_test;shutdown=true"/>
+        <property name="username" value="SA"/>
         <property name="password" value=""/>
     </bean>
 
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
             </props>
         </property>
     </bean>
@@ -45,4 +45,5 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
     </bean>
+    <bean id="addressDao" class="pl.atins.misie.sos.dao.impl.AddressDaoImpl" />
 </beans>
