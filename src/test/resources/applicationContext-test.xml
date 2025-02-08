@@ -46,4 +46,5 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
         <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
     </bean>
     <bean id="addressDao" class="pl.atins.misie.sos.dao.impl.AddressDaoImpl" />
+    <bean id="paymentDao" class="pl.atins.misie.sos.dao.impl.PaymentDaoImpl" />
 </beans>
