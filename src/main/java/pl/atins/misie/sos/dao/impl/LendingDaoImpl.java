@@ -30,7 +30,10 @@ public class LendingDaoImpl implements LendingDao {
 
     @Override
     public void delete(Lending lending) {
-        entityManager.remove(entityManager.contains(lending) ? lending : entityManager.merge(lending));
+        if (!entityManager.contains(lending)) {
+            lending = entityManager.merge(lending);
+        }
+        entityManager.remove(lending);
     }
 
     @Override
