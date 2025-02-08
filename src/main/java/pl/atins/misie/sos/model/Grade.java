@@ -13,14 +13,15 @@ import java.time.LocalDateTime;
 @Setter
 public class Grade {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     public Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="student_subject_id", nullable=false)
-    @ManyToOne(optional=false)
     private StudentSubject studentSubject;
 
-    @Column(name="grade", nullable=false)
+    @Column(name="grade", nullable=false, precision=2, scale=1)
     private BigDecimal grade;
 
     @Column(name="type", nullable=false)

@@ -12,15 +12,16 @@ import java.time.LocalDateTime;
 @Setter
 public class StudentSubject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     public Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="student_id", nullable=false)
-    @ManyToOne(optional=false)
     private User student;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="subject_id", nullable=false)
-    @ManyToOne(optional=false)
     private Subject subject;
 
     @Column(name="registration_time")

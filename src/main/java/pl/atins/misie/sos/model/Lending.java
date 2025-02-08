@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class Lending {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     public Integer id;
 
@@ -19,13 +20,13 @@ public class Lending {
     private LocalDateTime lendingDate;
 
     @Column(name="return_date")
-    private String returnDate;
+    private LocalDateTime returnDate;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="user_id", nullable=false)
-    @ManyToOne(optional=false)
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="library_item_id", nullable=false)
-    @ManyToOne(optional=false)
     private LibraryItem libraryItem;
 }

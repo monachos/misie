@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class Subject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     public Integer id;
 
@@ -45,11 +46,11 @@ public class Subject {
     @Column(name="room_number", nullable=false)
     private Integer roomNumber;
 
-    @JoinColumn(name="lecturer_id", nullable=false)
-    @ManyToOne(optional=true)
+    @ManyToOne(fetch = FetchType.LAZY, optional=true)
+    @JoinColumn(name="lecturer_id")
     private User lecturer;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="department_id", nullable=false)
-    @ManyToOne(optional=false)
     private Department department;
 }

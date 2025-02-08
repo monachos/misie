@@ -12,22 +12,23 @@ import java.time.LocalDateTime;
 @Setter
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
 
     @Column(name="student_id_number", unique=true)
     private String studentIdNumber;
 
-    @Column(name="active", unique=true)
+    @Column(name="active", nullable=false)
     private Boolean active;
 
-    @Column(name="deleted", unique=true)
+    @Column(name="deleted", nullable=false)
     private Boolean deleted;
 
-    @Column(name="email", unique=true)
+    @Column(name="email", unique=true, nullable=false)
     private String email;
 
-    @Column(name="password", unique=true)
+    @Column(name="password", nullable=false)
     private String password;
 
     @Column(name="phone_2fa")
@@ -39,22 +40,22 @@ public class User {
     @Column(name="accepted_terms_of_use", nullable=false)
     private Boolean acceptedTermsOfUse;
 
-    @Column(name="name", unique=true)
+    @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name="surname", unique=true)
+    @Column(name="surname", nullable=false)
     private String surname;
 
-    @JoinColumn(name="registered_address", nullable=false)
     @OneToOne(optional=false)
+    @JoinColumn(name="registered_address", nullable=false)
     private Address registeredAddress;
 
-    @JoinColumn(name="residential_address")
     @OneToOne(optional=true)
+    @JoinColumn(name="residential_address")
     private Address residentialAddress;
 
-    @JoinColumn(name="correspondence_address", nullable=true)
     @OneToOne(optional=true)
+    @JoinColumn(name="correspondence_address")
     private Address correspondenceAddress;
 
     @Column(name="blocked_account", nullable=false)
