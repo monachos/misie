@@ -14,10 +14,6 @@ public class AddressDaoImpl implements AddressDao {
     @PersistenceContext
     EntityManager entityManager;
 
-//    @Override
-//    public Address findById(int id) {
-//        return entityManager.find(Address.class, id);
-//    }
 
     @Override
     public List<Address> findAll() {

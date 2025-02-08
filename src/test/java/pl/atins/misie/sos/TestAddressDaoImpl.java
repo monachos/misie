@@ -22,28 +22,6 @@ public class TestAddressDaoImpl {
     @Autowired
     AddressDao addressDao;
 
-//    @Before
-//    public void setUp(
-//    ){
-//        Address address = new Address();
-//        //address.setId(1);
-//        address.setAddressLine1("sss");
-//        address.setAddressLine2("aaa");
-//        addressDao.save(address);
-//    }
-//
-//    @After
-//    public void remove(
-//    ){
-//        addressDao.deleteAll();
-//    }
-
-//    @Test
-//    public void findByIdTest() {
-//    Assert.assertNotNull(addressDao.findById(1));
-//    Assert.assertNull(addressDao.findById(2));
-//
-//    }
 
     @Test
     public void testFindAll() {
@@ -53,7 +31,6 @@ public class TestAddressDaoImpl {
 
 
         Address address = new Address();
-        //address.setId(1);
         address.setAddressLine1("sss");
         address.setAddressLine2("aaa");
         addressDao.save(address);
@@ -72,11 +49,31 @@ public class TestAddressDaoImpl {
         Assert.assertEquals(0,addressDao.findAll().size());
 
     }
+
+    @Test
+    public void testSave() {
+
+        Address address = new Address();
+        address.setAddressLine1("sss");
+        address.setAddressLine2("aaa");
+
+        addressDao.save(address);
+
+        Assert.assertNotNull(addressDao.findByAdressLines("sss","aaa"));
+
+        Address address2 = new Address();
+
+        address2.setId(1);
+        address2.setAddressLine1("sss");
+        address2.setAddressLine2("aaa");
+        Assert.assertThrows(EntityExistsException.class,() -> addressDao.save(address2));
+
+    }
+
     @Test
     public void testUpdate() {
 
         Address address = new Address();
-        //address.setId(1);
         address.setAddressLine1("sss");
         address.setAddressLine2("aaa");
         addressDao.save(address);
@@ -96,7 +93,6 @@ public class TestAddressDaoImpl {
     public void testDelete() {
 
         Address address = new Address();
-        //address.setId(1);
         address.setAddressLine1("sss");
         address.setAddressLine2("aaa");
 
@@ -128,26 +124,6 @@ public class TestAddressDaoImpl {
         addressDao.deleteAll();
 
         Assert.assertEquals(0,addressDao.findAll().size());
-
-    }
-
-    @Test
-    public void testSave() {
-
-        Address address = new Address();
-        address.setAddressLine1("sss");
-        address.setAddressLine2("aaa");
-
-        addressDao.save(address);
-
-        Assert.assertNotNull(addressDao.findByAdressLines("sss","aaa"));
-
-        Address address2 = new Address();
-
-        address2.setId(1);
-        address2.setAddressLine1("sss");
-        address2.setAddressLine2("aaa");
-        Assert.assertThrows(EntityExistsException.class,() -> addressDao.save(address2));
 
     }
 

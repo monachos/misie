@@ -5,17 +5,15 @@ import pl.atins.misie.sos.model.Address;
 import java.util.List;
 public interface AddressDao {
 
-//    public Address findById(int id);
+    List<Address> findAll();
 
-    public List<Address> findAll();
+    void save(Address address);
 
-    public void save(Address address);
+    void delete(Address address);
 
-    public void delete(Address address);
+    void update(Address address);
 
-    public void update(Address address);
+    void deleteAll();
 
-    public void deleteAll();
-
-    public Address findByAdressLines(String addressLine1, String addressLine2);
+    Address findByAdressLines(String addressLine1, String addressLine2);
 }
