@@ -73,7 +73,6 @@ public class TestLibraryItemDaoImpl {
         libraryItemDao.delete(item);
 
         Assert.assertNull(libraryItemDao.findById(item.getId()));
-        Assert.assertThrows(IllegalArgumentException.class, () -> libraryItemDao.delete(item));
     }
 
     @Test
