@@ -23,7 +23,7 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
         <property name="password" value=""/>
     </bean>
 
-<!--    <tx:annotation-driven />-->
+    <!--    <tx:annotation-driven />-->
     <bean id="entityManagerFactoryBean"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -50,4 +50,5 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
         <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
     </bean>
     <bean id="libraryItemDao" class="pl.atins.misie.sos.dao.impl.LibraryItemDaoImpl"/>
+    <bean id="gradeDao" class="pl.atins.misie.sos.dao.impl.GradeDaoImpl"/>
 </beans>
