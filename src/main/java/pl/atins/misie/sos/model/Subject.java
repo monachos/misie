@@ -44,7 +44,7 @@ public class Subject {
     private LocalDateTime registrationEnd;
 
     @Column(name="room_number", nullable=false)
-    private Integer roomNumber;
+    private String roomNumber;
 
     @ManyToOne(fetch = FetchType.LAZY, optional=true)
     @JoinColumn(name="lecturer_id")

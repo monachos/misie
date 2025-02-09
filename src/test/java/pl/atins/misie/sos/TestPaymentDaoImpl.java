@@ -9,6 +9,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.atins.misie.sos.dao.PaymentDao;
+import pl.atins.misie.sos.dao.UserDao;
+import pl.atins.misie.sos.dao.impl.AddressDaoImpl;
+import pl.atins.misie.sos.model.Address;
 import pl.atins.misie.sos.model.Payment;
 import pl.atins.misie.sos.model.User;
 
@@ -22,14 +25,46 @@ import java.util.List;
 public class TestPaymentDaoImpl {
 
     @Autowired
-    PaymentDao paymentDao;
+    private PaymentDao paymentDao;
+
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private AddressDaoImpl addressDao;
+
+    private User createUser() {
+        User student = new User();
+        student.setEmail("student@test.com");
+        student.setActive(true);
+        student.setDeleted(false);
+        student.setAcceptedPrivacyPolicy(true);
+        student.setAcceptedTermsOfUse(true);
+        student.setPassword("password123");
+        student.setName("Test");
+        student.setSurname("User");
+        student.setBlockedAccount(false);
+
+        Address address = new Address();
+        address.setAddressLine1("Test Street 123");
+
+        addressDao.save(address);
+
+        student.setRegisteredAddress(address);
+        userDao.save(student);
+
+        return student;
+    }
+
+
+
 
     @Test
     public void testFindAll() {
         Assert.assertEquals(0, paymentDao.findAll().size());
 
+        User student = createUser();
         Payment payment = new Payment();
-        payment.setStudent(new User());
+        payment.setStudent(student);
         payment.setType("Credit");
         payment.setAmount(new BigDecimal("100.00"));
         paymentDao.save(payment);
@@ -37,7 +72,7 @@ public class TestPaymentDaoImpl {
         Assert.assertEquals(1, paymentDao.findAll().size());
 
         Payment payment2 = new Payment();
-        payment2.setStudent(new User());
+        payment2.setStudent(student);
         payment2.setType("Debit");
         payment2.setAmount(new BigDecimal("50.00"));
         paymentDao.save(payment2);
@@ -50,10 +85,9 @@ public class TestPaymentDaoImpl {
 
     @Test
     public void testSave() {
-        Payment payment = new Payment();
-        User student = new User();
-        student.setId(1);
+        User student = createUser();
 
+        Payment payment = new Payment();
         payment.setStudent(student);
         payment.setType("Credit");
         payment.setAmount(new BigDecimal("200.00"));
@@ -61,7 +95,6 @@ public class TestPaymentDaoImpl {
         paymentDao.save(payment);
 
         List<Payment> payments = paymentDao.findAll();
-
         Assert.assertEquals(1, payments.size());
 
         Payment savedPayment = payments.get(0);
@@ -69,51 +102,54 @@ public class TestPaymentDaoImpl {
         Assert.assertEquals("Credit", savedPayment.getType());
         Assert.assertEquals(new BigDecimal("200.00"), savedPayment.getAmount());
         Assert.assertNotNull(savedPayment.getStudent());
-        Assert.assertEquals(1, savedPayment.getStudent().getId().intValue());
+        Assert.assertEquals(student.getEmail(), savedPayment.getStudent().getEmail());
     }
-
 
     @Test
     public void testUpdate() {
+        User student = createUser();
+
         Payment payment = new Payment();
-        payment.setStudent(new User());
+        payment.setStudent(student);
         payment.setType("Credit");
         payment.setAmount(new BigDecimal("100.00"));
         paymentDao.save(payment);
 
-        payment.setAmount(new BigDecimal("150.00"));
-        paymentDao.update(payment);
+        Payment existingPayment = paymentDao.findAll().get(0);
+        existingPayment.setAmount(new BigDecimal("150.00"));
+        paymentDao.update(existingPayment);
 
-        List<Payment> payments = paymentDao.findAll();
-        Assert.assertEquals(new BigDecimal("150.00"), payments.get(0).getAmount());
+        Payment updatedPayment = paymentDao.findAll().get(0);
+        Assert.assertEquals(new BigDecimal("150.00"), updatedPayment.getAmount());
     }
 
     @Test
     public void testDelete() {
+        User student = createUser();
+
         Payment payment = new Payment();
-        payment.setStudent(new User());
+        payment.setStudent(student);
         payment.setType("Debit");
         payment.setAmount(new BigDecimal("50.00"));
         paymentDao.save(payment);
 
-        paymentDao.delete(payment);
+        Payment existingPayment = paymentDao.findAll().get(0);
+        paymentDao.delete(existingPayment);
 
         Assert.assertTrue(paymentDao.findAll().isEmpty());
     }
 
     @Test
     public void testDeleteAll() {
-        Payment payment1 = new Payment();
-        payment1.setStudent(new User());
-        payment1.setType("Credit");
-        payment1.setAmount(new BigDecimal("300.00"));
-        paymentDao.save(payment1);
+        User student = createUser();
 
-        Payment payment2 = new Payment();
-        payment2.setStudent(new User());
-        payment2.setType("Debit");
-        payment2.setAmount(new BigDecimal("150.00"));
-        paymentDao.save(payment2);
+        for (int i = 0; i < 5; i++) {
+            Payment payment = new Payment();
+            payment.setStudent(student);
+            payment.setType("Credit");
+            payment.setAmount(new BigDecimal("300.00"));
+            paymentDao.save(payment);
+        }
 
         paymentDao.deleteAll();
 
