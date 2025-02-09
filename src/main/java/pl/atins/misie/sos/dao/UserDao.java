@@ -2,9 +2,12 @@ package pl.atins.misie.sos.dao;
 
 import pl.atins.misie.sos.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
+    List<User> findAll();
+
     Optional<User> findByEmail(String email);
 
     <S extends User> S save(S entity);
