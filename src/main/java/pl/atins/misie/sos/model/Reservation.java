@@ -1,9 +1,12 @@
 package pl.atins.misie.sos.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -11,6 +14,8 @@ import java.time.LocalDateTime;
 @Table(name="Reservation")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +23,7 @@ public class Reservation {
     public Integer id;
 
     @Column(name="reservation_date", nullable=false)
-    private LocalDateTime reservationDate;
+    private LocalDate reservationDate;
 
     @Column(name="reservation_status", nullable=false)
     private String reservationStatus;
