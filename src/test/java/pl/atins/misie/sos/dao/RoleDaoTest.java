@@ -53,11 +53,13 @@ public class RoleDaoTest {
 
     @Test
     public void testFindAllWithOne() {
-        final var role = new Role();
-        role.setDepartment(mainDepartment);
-        role.setName("Admin");
-        role.setIsAdmin(true);
-        roleDao.save(role);
+        {
+            final var role = new Role();
+            role.setDepartment(mainDepartment);
+            role.setName("Admin");
+            role.setIsAdmin(true);
+            roleDao.save(role);
+        }
 
         final Role result = assertAndGetExactlyOneRecord();
         Assert.assertEquals("Admin", result.getName());
@@ -66,11 +68,13 @@ public class RoleDaoTest {
 
     @Test
     public void testSave() {
-        final var role = new Role();
-        role.setDepartment(mainDepartment);
-        role.setName("User");
-        role.setIsAdmin(false);
-        roleDao.save(role);
+        {
+            final var role = new Role();
+            role.setDepartment(mainDepartment);
+            role.setName("User");
+            role.setIsAdmin(false);
+            roleDao.save(role);
+        }
 
         final Role result = assertAndGetExactlyOneRecord();
         Assert.assertTrue(result.getId() > 0);
@@ -93,21 +97,25 @@ public class RoleDaoTest {
         role2.setId(role1.getId());
         role2.setName("Role2");
         role2.setIsAdmin(false);
-        Assert.assertThrows(EntityExistsException.class,() -> roleDao.save(role2));
+        Assert.assertThrows(EntityExistsException.class, () -> roleDao.save(role2));
     }
 
     @Test
     public void testUpdate() {
-        final var role = new Role();
-        role.setDepartment(mainDepartment);
-        role.setName("Student");
-        role.setIsAdmin(false);
-        roleDao.save(role);
+        {
+            final var role = new Role();
+            role.setDepartment(mainDepartment);
+            role.setName("Student");
+            role.setIsAdmin(false);
+            roleDao.save(role);
+        }
 
-        final Role existingRole = assertAndGetExactlyOneRecord();
-        existingRole.setName("Admin");
-        role.setIsAdmin(true);
-        roleDao.update(existingRole);
+        {
+            final Role existingRole = assertAndGetExactlyOneRecord();
+            existingRole.setName("Admin");
+            existingRole.setIsAdmin(true);
+            roleDao.update(existingRole);
+        }
 
         final Role result = assertAndGetExactlyOneRecord();
         Assert.assertEquals("Admin", result.getName());
@@ -116,11 +124,13 @@ public class RoleDaoTest {
 
     @Test
     public void testDelete() {
-        final var role = new Role();
-        role.setDepartment(mainDepartment);
-        role.setName("Role");
-        role.setIsAdmin(false);
-        roleDao.save(role);
+        {
+            final var role = new Role();
+            role.setDepartment(mainDepartment);
+            role.setName("Role");
+            role.setIsAdmin(false);
+            roleDao.save(role);
+        }
 
         final Role existingRole = assertAndGetExactlyOneRecord();
         roleDao.delete(existingRole);
