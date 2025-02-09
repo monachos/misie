@@ -23,7 +23,7 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
         <property name="password" value=""/>
     </bean>
 
-<!--    <tx:annotation-driven />-->
+    <!--    <tx:annotation-driven />-->
     <bean id="entityManagerFactoryBean"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -44,9 +44,14 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     <bean id="addressDao" class="pl.atins.misie.sos.dao.impl.AddressDaoImpl" />
     <bean id="departmentDao" class="pl.atins.misie.sos.dao.impl.DepartmentDaoImpl" />
+    <bean id="studentSubjectDao" class="pl.atins.misie.sos.dao.impl.StudentSubjectDaoImpl" />
     <bean id="paymentDao" class="pl.atins.misie.sos.dao.impl.PaymentDaoImpl" />
     <bean id="roleDao" class="pl.atins.misie.sos.dao.impl.RoleDaoImpl" />
+    <bean id="reservation" class="pl.atins.misie.sos.dao.impl.ReservationDaoImpl"/>
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
     </bean>
+    <bean id="libraryItemDao" class="pl.atins.misie.sos.dao.impl.LibraryItemDaoImpl"/>
+    <bean id="gradeDao" class="pl.atins.misie.sos.dao.impl.GradeDaoImpl"/>
+    <bean id="lendingDao" class="pl.atins.misie.sos.dao.impl.LendingDaoImpl"/>
 </beans>
