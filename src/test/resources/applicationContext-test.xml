@@ -50,4 +50,5 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
         <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
     </bean>
     <bean id="libraryItemDao" class="pl.atins.misie.sos.dao.impl.LibraryItemDaoImpl"/>
+    <bean id="gradeDto" class="pl.atins.misie.sos.dao.impl.GradeDaoImpl" />
 </beans>
