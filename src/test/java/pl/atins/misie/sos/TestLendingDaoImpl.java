@@ -8,6 +8,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.atins.misie.sos.dao.LendingDao;
+import pl.atins.misie.sos.dao.LibraryItemDao;
+import pl.atins.misie.sos.dao.UserDao;
+import pl.atins.misie.sos.dao.impl.AddressDaoImpl;
+import pl.atins.misie.sos.model.Address;
 import pl.atins.misie.sos.model.Lending;
 import pl.atins.misie.sos.model.LibraryItem;
 import pl.atins.misie.sos.model.User;
@@ -16,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-test.xml"})
 @Transactional
 @Rollback(true)
 public class TestLendingDaoImpl {
@@ -24,15 +28,51 @@ public class TestLendingDaoImpl {
     @Autowired
     LendingDao lendingDao;
 
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private LibraryItemDao libraryItemDao;
+
+    @Autowired
+    private AddressDaoImpl addressDao;
+
+    private User createUser() {
+        User student = new User();
+        student.setEmail("student@test.com");
+        student.setActive(true);
+        student.setDeleted(false);
+        student.setAcceptedPrivacyPolicy(true);
+        student.setAcceptedTermsOfUse(true);
+        student.setPassword("password123");
+        student.setName("Test");
+        student.setSurname("User");
+        student.setBlockedAccount(false);
+
+        Address address = new Address();
+        address.setAddressLine1("Test Street 123");
+        addressDao.save(address);
+
+        student.setRegisteredAddress(address);
+        userDao.save(student);
+
+        return student;
+    }
+
+    private LibraryItem createAndSaveLibraryItem() {
+        LibraryItem item = new LibraryItem();
+        item.setQuantity(5);
+        libraryItemDao.save(item);
+        return item;
+    }
+
     @Test
     public void testFindAll() {
         Assert.assertEquals(0, lendingDao.findAll().size());
 
-        User user = new User();
-        user.setName("John");
-        user.setSurname("Doe");
-        LibraryItem item = new LibraryItem();
-        item.setQuantity(5);
+        User user = createUser();
+        LibraryItem item = createAndSaveLibraryItem();
+
         Lending lending = new Lending();
         lending.setLendingDate(LocalDateTime.of(2025, 5, 15, 12, 0));
         lending.setUser(user);
@@ -43,18 +83,16 @@ public class TestLendingDaoImpl {
         Assert.assertEquals(1, lendings.size());
         Lending retrieved = lendings.get(0);
         Assert.assertEquals(LocalDateTime.of(2025, 5, 15, 12, 0), retrieved.getLendingDate());
-        Assert.assertEquals("John", retrieved.getUser().getName());
-        Assert.assertEquals("Doe", retrieved.getUser().getSurname());
+        Assert.assertEquals("Test", retrieved.getUser().getName());
+        Assert.assertEquals("User", retrieved.getUser().getSurname());
         Assert.assertEquals(Integer.valueOf(5), retrieved.getLibraryItem().getQuantity());
     }
 
     @Test
     public void testSave() {
-        User user = new User();
-        user.setName("Alice");
-        user.setSurname("Smith");
-        LibraryItem item = new LibraryItem();
-        item.setQuantity(3);
+        User user = createUser();
+        LibraryItem item = createAndSaveLibraryItem();
+
         Lending lending = new Lending();
         lending.setLendingDate(LocalDateTime.of(2025, 6, 10, 10, 0));
         lending.setUser(user);
@@ -64,15 +102,16 @@ public class TestLendingDaoImpl {
         Lending retrievedLending = lendingDao.findById(lending.getId());
         Assert.assertNotNull(retrievedLending);
         Assert.assertEquals(LocalDateTime.of(2025, 6, 10, 10, 0), retrievedLending.getLendingDate());
-        Assert.assertEquals("Alice", retrievedLending.getUser().getName());
-        Assert.assertEquals("Smith", retrievedLending.getUser().getSurname());
-        Assert.assertEquals(Integer.valueOf(3), retrievedLending.getLibraryItem().getQuantity());
+        Assert.assertEquals("Test", retrievedLending.getUser().getName());
+        Assert.assertEquals("User", retrievedLending.getUser().getSurname());
+        Assert.assertEquals(Integer.valueOf(5), retrievedLending.getLibraryItem().getQuantity());
     }
 
     @Test
     public void testUpdate() {
-        User user = new User();
-        LibraryItem item = new LibraryItem();
+        User user = createUser();
+        LibraryItem item = createAndSaveLibraryItem();
+
         Lending lending = new Lending();
         lending.setLendingDate(LocalDateTime.of(2025, 7, 20, 15, 0));
         lending.setUser(user);
@@ -89,8 +128,9 @@ public class TestLendingDaoImpl {
 
     @Test
     public void testDelete() {
-        User user = new User();
-        LibraryItem item = new LibraryItem();
+        User user = createUser();
+        LibraryItem item = createAndSaveLibraryItem();
+
         Lending lending = new Lending();
         lending.setLendingDate(LocalDateTime.of(2025, 8, 5, 9, 0));
         lending.setUser(user);
@@ -103,8 +143,9 @@ public class TestLendingDaoImpl {
 
     @Test
     public void testDeleteAll() {
-        User user = new User();
-        LibraryItem item = new LibraryItem();
+        User user = createUser();
+        LibraryItem item = createAndSaveLibraryItem();
+
         Lending lending1 = new Lending();
         lending1.setLendingDate(LocalDateTime.of(2025, 9, 1, 14, 0));
         lending1.setUser(user);
