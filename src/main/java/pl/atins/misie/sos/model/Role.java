@@ -12,7 +12,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    public Integer id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional=false)
     @JoinColumn(name="department_id", nullable=false)

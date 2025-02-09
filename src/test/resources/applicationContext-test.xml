@@ -42,10 +42,18 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     </bean>
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    <bean id="addressDao" class="pl.atins.misie.sos.dao.impl.AddressDaoImpl" />
+    <bean id="departmentDao" class="pl.atins.misie.sos.dao.impl.DepartmentDaoImpl" />
+    <bean id="paymentDao" class="pl.atins.misie.sos.dao.impl.PaymentDaoImpl" />
+    <bean id="roleDao" class="pl.atins.misie.sos.dao.impl.RoleDaoImpl" />
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
     </bean>
+
     <bean id="addressDao" class="pl.atins.misie.sos.dao.impl.AddressDaoImpl" />
     <bean id="paymentDao" class="pl.atins.misie.sos.dao.impl.PaymentDaoImpl" />
     <bean id="gradeDto" class="pl.atins.misie.sos.dao.impl.GradeDaoImpl" />
+
+    <bean id="libraryItemDao" class="pl.atins.misie.sos.dao.impl.LibraryItemDaoImpl"/>
+
 </beans>
