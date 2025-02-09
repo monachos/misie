@@ -39,9 +39,9 @@ CREATE TABLE SOS_User(
     correspondence_address INTEGER,
     blocked_account BOOLEAN DEFAULT FALSE NOT NULL,
     block_time DATETIME,
-    FOREIGN KEY (registered_address) REFERENCES Address(id),
-    FOREIGN KEY (residential_address) REFERENCES Address(id),
-    FOREIGN KEY (correspondence_address) REFERENCES Address(id)
+    FOREIGN KEY (registered_address) REFERENCES Address(id) ON DELETE CASCADE,
+    FOREIGN KEY (residential_address) REFERENCES Address(id) ON DELETE SET NULL,
+    FOREIGN KEY (correspondence_address) REFERENCES Address(id) ON DELETE SET NULL
 );
 
 CREATE TABLE Payment(
@@ -49,7 +49,7 @@ CREATE TABLE Payment(
     student_id INTEGER NOT NULL,
     type VARCHAR(50) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (student_id) REFERENCES SOS_User(id)
+    FOREIGN KEY (student_id) REFERENCES SOS_User(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Reservation(
@@ -58,8 +58,8 @@ CREATE TABLE Reservation(
     reservation_status VARCHAR(50) NOT NULL,
     user_id INTEGER NOT NULL,
     library_item_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES SOS_User(id),
-    FOREIGN KEY (library_item_id) REFERENCES Library_Item(id)
+    FOREIGN KEY (user_id) REFERENCES SOS_User(id) ON DELETE CASCADE,
+    FOREIGN KEY (library_item_id) REFERENCES Library_Item(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Lending(
@@ -68,8 +68,8 @@ CREATE TABLE Lending(
     return_date DATETIME,
     user_id INTEGER NOT NULL,
     library_item_id INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES SOS_User(id),
-    FOREIGN KEY (library_item_id) REFERENCES Library_Item(id)
+    FOREIGN KEY (user_id) REFERENCES SOS_User(id) ON DELETE CASCADE,
+    FOREIGN KEY (library_item_id) REFERENCES Library_Item(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Department(
@@ -82,7 +82,7 @@ CREATE TABLE SOS_Role(
     department_id INTEGER NOT NULL,
     name VARCHAR(100) NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE NOT NULL,
-    FOREIGN KEY (department_id) REFERENCES Department(id)
+    FOREIGN KEY (department_id) REFERENCES Department(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Subject(
@@ -96,11 +96,11 @@ CREATE TABLE Subject(
     academic_year INTEGER NOT NULL,
     registration_start DATETIME NOT NULL,
     registration_end DATETIME NOT NULL,
-    room_number INTEGER NOT NULL,
+    room_number VARCHAR(50) NOT NULL,
     lecturer_id INTEGER,
     department_id INTEGER NOT NULL,
-    FOREIGN KEY (lecturer_id) REFERENCES SOS_User(id),
-    FOREIGN KEY (department_id) REFERENCES Department(id)
+    FOREIGN KEY (lecturer_id) REFERENCES SOS_User(id) ON DELETE SET NULL,
+    FOREIGN KEY (department_id) REFERENCES Department(id) ON DELETE CASCADE
 );
 
 CREATE TABLE University_Class(
@@ -108,7 +108,7 @@ CREATE TABLE University_Class(
     subject_id INTEGER NOT NULL,
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL,
-    FOREIGN KEY (subject_id) REFERENCES Subject(id)
+    FOREIGN KEY (subject_id) REFERENCES Subject(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Student_Subject(
@@ -116,8 +116,8 @@ CREATE TABLE Student_Subject(
     student_id INTEGER NOT NULL,
     subject_id INTEGER NOT NULL,
     registration_time DATETIME,
-    FOREIGN KEY (student_id) REFERENCES SOS_User(id),
-    FOREIGN KEY (subject_id) REFERENCES Subject(id)
+    FOREIGN KEY (student_id) REFERENCES SOS_User(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES Subject(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Grade(
@@ -126,5 +126,5 @@ CREATE TABLE Grade(
     grade DECIMAL(2,1) NOT NULL,
     type VARCHAR(50) NOT NULL,
     grading_date DATETIME NOT NULL,
-    FOREIGN KEY (student_subject_id) REFERENCES Student_Subject(id)
+    FOREIGN KEY (student_subject_id) REFERENCES Student_Subject(id) ON DELETE CASCADE
 );
