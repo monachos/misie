@@ -2,13 +2,13 @@ package pl.atins.misie.sos.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.stereotype.Repository;
+import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.UserDao;
 import pl.atins.misie.sos.model.User;
 
 import java.util.Optional;
 
-@Repository
+@Transactional
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext

@@ -1,4 +1,4 @@
-package pl.atins.misie.sos;
+package pl.atins.misie.sos.dao;
 
 import jakarta.transaction.Transactional;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:applicationContext-test.xml"})
 @Transactional
 @Rollback(true)
-public class TestGradeDaoImpl {
+public class GradeDaoTest {
 
     @Autowired
     private GradeDao gradeDao;
