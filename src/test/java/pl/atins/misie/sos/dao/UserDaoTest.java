@@ -1,12 +1,12 @@
 package pl.atins.misie.sos.dao;
 
 import org.assertj.core.api.SoftAssertions;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -153,7 +153,7 @@ public class UserDaoTest {
             u.setStudentIdNumber("1111");
             u.setRegisteredAddress(wroclawAddress);
         });
-        Assert.assertThrows(DataIntegrityViolationException.class, () -> userDao.save(newUser));
+        Assert.assertThrows(ConstraintViolationException.class, () -> userDao.save(newUser));
     }
 
     @Test
@@ -166,7 +166,7 @@ public class UserDaoTest {
             u.setEmail("00@example.com");
             u.setRegisteredAddress(wroclawAddress);
         });
-        Assert.assertThrows(DataIntegrityViolationException.class, () -> userDao.save(newUser));
+        Assert.assertThrows(ConstraintViolationException.class, () -> userDao.save(newUser));
     }
 
     @Test
