@@ -1,12 +1,11 @@
 package pl.atins.misie.sos.dao;
 
 import pl.atins.misie.sos.model.Subject;
-import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 
 public interface SubjectDao {
-    void save(Subject subject);
+    <S extends Subject> S save(S subject);
     void update(Subject subject);
     void delete(Subject subject);
     void deleteAll();
@@ -15,5 +14,5 @@ public interface SubjectDao {
     List<Subject> findBySemester(String semester);
     List<Subject> findByAcademicYear(Integer academicYear);
     List<Subject> findActiveSubjects();
-    List<Subject> findByLecturer(User lecturer);
+    List<Subject> findByLecturerId(int lecturerId);
 }
