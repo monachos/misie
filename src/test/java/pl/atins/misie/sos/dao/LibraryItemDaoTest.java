@@ -1,6 +1,5 @@
-package pl.atins.misie.sos;
+package pl.atins.misie.sos.dao;
 
-import jakarta.persistence.EntityExistsException;
 import jakarta.transaction.Transactional;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -8,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import pl.atins.misie.sos.dao.LibraryItemDao;
 import pl.atins.misie.sos.model.LibraryItem;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
 @Transactional
 @Rollback(true)
-public class TestLibraryItemDaoImpl {
+public class LibraryItemDaoTest {
 
     @Autowired
     LibraryItemDao libraryItemDao;

@@ -1,4 +1,4 @@
-package pl.atins.misie.sos;
+package pl.atins.misie.sos.dao;
 
 import jakarta.transaction.Transactional;
 import org.junit.*;
@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import pl.atins.misie.sos.dao.LendingDao;
-import pl.atins.misie.sos.dao.LibraryItemDao;
-import pl.atins.misie.sos.dao.UserDao;
 import pl.atins.misie.sos.dao.impl.AddressDaoImpl;
 import pl.atins.misie.sos.model.Address;
 import pl.atins.misie.sos.model.Lending;
@@ -23,7 +20,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:applicationContext-test.xml"})
 @Transactional
 @Rollback(true)
-public class TestLendingDaoImpl {
+public class LendingDaoTest {
 
     @Autowired
     LendingDao lendingDao;

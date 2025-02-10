@@ -20,7 +20,7 @@ import java.util.UUID;
 @ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
 @Transactional
 @Rollback(true)
-public class TestReservationDaoImpl {
+public class ReservationDaoTest {
 
     @Autowired
     private ReservationDao reservationDao;
