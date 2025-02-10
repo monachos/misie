@@ -1,6 +1,5 @@
 package pl.atins.misie.sos.dao;
 
-import pl.atins.misie.sos.model.Department;
 import pl.atins.misie.sos.model.Role;
 
 import java.util.List;

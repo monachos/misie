@@ -3,14 +3,11 @@ package pl.atins.misie.sos.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Repository;
 import pl.atins.misie.sos.dao.SubjectDao;
 import pl.atins.misie.sos.model.Subject;
-import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 
-@Repository
 @Transactional
 public class SubjectDaoImpl implements SubjectDao {
 
@@ -18,8 +15,9 @@ public class SubjectDaoImpl implements SubjectDao {
     private EntityManager entityManager;
 
     @Override
-    public void save(Subject subject) {
+    public <S extends Subject> S save(S subject) {
         entityManager.persist(subject);
+        return subject;
     }
 
     @Override
@@ -67,9 +65,9 @@ public class SubjectDaoImpl implements SubjectDao {
     }
 
     @Override
-    public List<Subject> findByLecturer(User lecturer) {
-        return entityManager.createQuery("SELECT s FROM Subject s WHERE s.lecturer = :lecturer", Subject.class)
-                .setParameter("lecturer", lecturer)
+    public List<Subject> findByLecturerId(int lecturerId) {
+        return entityManager.createQuery("SELECT s FROM Subject s WHERE s.lecturer.id = :lecturer", Subject.class)
+                .setParameter("lecturer", lecturerId)
                 .getResultList();
     }
 }
