@@ -2,10 +2,12 @@ package pl.atins.misie.sos.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.UserDao;
 import pl.atins.misie.sos.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -13,6 +15,13 @@ public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Override
+    public List<User> findAll() {
+        final String hql = "SELECT u FROM User u";
+        final TypedQuery<User> query = entityManager.createQuery(hql, User.class);
+        return query.getResultList();
+    }
 
     @Override
     public Optional<User> findByEmail(String email) {
