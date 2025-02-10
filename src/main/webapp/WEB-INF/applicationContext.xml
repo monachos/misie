@@ -39,6 +39,10 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.
     </bean>
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
+    </bean>
+
     <bean id="addressDao" class="pl.atins.misie.sos.dao.impl.AddressDaoImpl" />
     <bean id="departmentDao" class="pl.atins.misie.sos.dao.impl.DepartmentDaoImpl" />
     <bean id="gradeDao" class="pl.atins.misie.sos.dao.impl.GradeDaoImpl"/>
@@ -48,7 +52,6 @@ http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.
     <bean id="reservationDao" class="pl.atins.misie.sos.dao.impl.ReservationDaoImpl"/>
     <bean id="roleDao" class="pl.atins.misie.sos.dao.impl.RoleDaoImpl" />
     <bean id="studentSubjectDao" class="pl.atins.misie.sos.dao.impl.StudentSubjectDaoImpl" />
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
-    </bean>
+    <bean id="subjectDao" class="pl.atins.misie.sos.dao.impl.SubjectDaoImpl" />
+    <bean id="userDao" class="pl.atins.misie.sos.dao.impl.UserDaoImpl" />
 </beans>

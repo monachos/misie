@@ -3,7 +3,6 @@ package pl.atins.misie.sos.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Repository;
 import pl.atins.misie.sos.dao.StudentSubjectDao;
 import pl.atins.misie.sos.model.StudentSubject;
 import pl.atins.misie.sos.model.User;
@@ -11,7 +10,6 @@ import pl.atins.misie.sos.model.Subject;
 
 import java.util.List;
 
-@Repository
 @Transactional
 public class StudentSubjectDaoImpl implements StudentSubjectDao {
 

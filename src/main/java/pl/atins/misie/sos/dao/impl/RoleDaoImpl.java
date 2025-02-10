@@ -4,11 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.RoleDao;
 import pl.atins.misie.sos.model.Role;
 
 import java.util.List;
 
+@Transactional
 public class RoleDaoImpl implements RoleDao {
     @PersistenceContext
     EntityManager entityManager;
