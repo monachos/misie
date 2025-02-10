@@ -3,14 +3,12 @@ package pl.atins.misie.sos.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Repository;
 import pl.atins.misie.sos.dao.SubjectDao;
 import pl.atins.misie.sos.model.Subject;
 import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 
-@Repository
 @Transactional
 public class SubjectDaoImpl implements SubjectDao {
 

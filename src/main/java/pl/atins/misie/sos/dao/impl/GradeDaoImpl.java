@@ -4,13 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import org.springframework.stereotype.Repository;
+import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.GradeDao;
 import pl.atins.misie.sos.model.Grade;
 
 import java.util.List;
 
-@Repository
+@Transactional
 public class GradeDaoImpl implements GradeDao {
 
     @PersistenceContext

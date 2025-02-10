@@ -4,11 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.LibraryItemDao;
 import pl.atins.misie.sos.model.LibraryItem;
 
 import java.util.List;
 
+@Transactional
 public class LibraryItemDaoImpl implements LibraryItemDao {
 
     @PersistenceContext
