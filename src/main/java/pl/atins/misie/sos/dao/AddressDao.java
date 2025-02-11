@@ -4,10 +4,10 @@ import pl.atins.misie.sos.model.Address;
 
 import java.util.List;
 public interface AddressDao {
-
+    Address findById(int id);
     List<Address> findAll();
 
-    void save(Address address);
+    Address save(Address address);
 
     void delete(Address address);
 
