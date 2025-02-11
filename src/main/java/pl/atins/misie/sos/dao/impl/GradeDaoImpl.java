@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.GradeDao;
 import pl.atins.misie.sos.model.Grade;
+import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 
@@ -48,5 +49,14 @@ public class GradeDaoImpl implements GradeDao {
     @Override
     public Grade findById(Integer id) {
         return entityManager.find(Grade.class, id);
+    }
+
+    @Override
+    public List<Grade> findByUser(User user) {
+        String hql = "SELECT G FROM Grade G" +
+                " WHERE G.studentSubject.student = :user";
+        return entityManager.createQuery(hql, Grade.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 }
