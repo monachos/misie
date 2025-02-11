@@ -1,6 +1,8 @@
 package pl.atins.misie.sos.dao;
 
 import pl.atins.misie.sos.model.Lending;
+import pl.atins.misie.sos.model.User;
+
 import java.util.List;
 
 public interface LendingDao {
@@ -10,4 +12,5 @@ public interface LendingDao {
     void update(Lending lending);
     void deleteAll();
     Lending findById(Integer id);
+    long getCountByUser(User user);
 }
