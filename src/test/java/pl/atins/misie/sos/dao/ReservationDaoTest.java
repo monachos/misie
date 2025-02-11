@@ -15,6 +15,7 @@ import pl.atins.misie.sos.model.User;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
@@ -78,8 +79,18 @@ public class ReservationDaoTest {
         return reservation;
     }
 
+    private void createReservation(Consumer<Reservation> customizationAction) {
+        Reservation reservation = new Reservation();
+        reservation.setUser(createUser());
+        reservation.setLibraryItem(createLibraryItem());
+        reservation.setReservationDate(LocalDate.of(2024, 2, 10));
+        reservation.setReservationStatus("ACTIVE");
+        customizationAction.accept(reservation);
+        reservationDao.save(reservation);
+    }
+
     @Test
-    public void findAll() {
+    public void testFindAll() {
         Assert.assertEquals(0, reservationDao.findAll().size());
 
         createReservation();
@@ -93,7 +104,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void save() {
+    public void testSave() {
         Reservation reservation = createReservation();
 
         List<Reservation> reservations = reservationDao.findAll();
@@ -106,7 +117,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void update() {
+    public void testUpdate() {
         Reservation reservation = createReservation();
         reservation.setReservationStatus("CANCELLED");
         reservationDao.update(reservation);
@@ -117,18 +128,45 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void delete() {
+    public void testDelete() {
         Reservation reservation = createReservation();
         reservationDao.delete(reservation);
         Assert.assertNull(reservationDao.findById(reservation.getId()));
     }
 
     @Test
-    public void deleteAll() {
+    public void testDeleteAll() {
         for (int i = 0; i < 5; i++) {
             createReservation();
         }
         reservationDao.deleteAll();
         Assert.assertEquals(0, reservationDao.findAll().size());
+    }
+
+    @Test
+    public void testFindByUserForUnknownData() {
+        for (int i = 0; i < 5; i++) {
+            createReservation();
+        }
+
+        final List<Reservation> result = reservationDao.findByUser(createUser());
+
+        Assert.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testFindByUserForExistingUser() {
+        final User mainUser = createUser();
+        for (int i = 0; i < 5; ++i) {
+            createReservation(r -> r.setUser(mainUser));
+        }
+        final User otherUser = createUser();
+        for (int i = 0; i < 3; ++i) {
+            createReservation(r -> r.setUser(otherUser));
+        }
+
+        final List<Reservation> result = reservationDao.findByUser(mainUser);
+
+        Assert.assertEquals(5, result.size());
     }
 }
