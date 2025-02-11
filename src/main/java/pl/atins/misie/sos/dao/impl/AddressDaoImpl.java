@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.AddressDao;
 import pl.atins.misie.sos.model.Address;
+import pl.atins.misie.sos.model.Grade;
 
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class AddressDaoImpl implements AddressDao {
     }
 
     @Override
-    public void save(Address address) {
+    public Address save(Address address) {
         entityManager.persist(address);
+        return address;
     }
 
     @Override
@@ -59,6 +61,10 @@ public class AddressDaoImpl implements AddressDao {
             return null;
         }
 
+    }
+    @Override
+    public Address findById(int id) {
+        return entityManager.find(Address.class, id);
     }
 
 }
