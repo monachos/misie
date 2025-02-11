@@ -16,7 +16,6 @@ import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -69,21 +68,10 @@ public class UserDaoTest {
     }
 
     private User newSampleUser(Consumer<User> customizationAction) {
-        final User user = new User();
-        user.setStudentIdNumber("%s".formatted(UUID.randomUUID()));
-        user.setActive(true);
-        user.setDeleted(false);
-        user.setEmail("%s@example.com".formatted(UUID.randomUUID()));
-        user.setPassword("qwerty");
-        user.setPhone2fa("123456789");
-        user.setAcceptedPrivacyPolicy(true);
-        user.setAcceptedTermsOfUse(true);
-        user.setName("Jan");
-        user.setSurname("Kowalski");
-        user.setRegisteredAddress(warsawAddress);
-        user.setBlockedAccount(false);
-        customizationAction.accept(user);
-        return user;
+        return SampleData.newUser(u -> {
+            u.setRegisteredAddress(warsawAddress);
+            customizationAction.accept(u);
+        });
     }
 
     private User saveSampleUser(Consumer<User> customizationAction) {
@@ -91,9 +79,14 @@ public class UserDaoTest {
         return userDao.save(user);
     }
 
+    private User saveSampleUser() {
+        return saveSampleUser(u -> {
+        });
+    }
+
     @Test
     public void testFindById() {
-        final Integer userId = saveSampleUser(u -> {}).getId();
+        final Integer userId = saveSampleUser().getId();
 
         final Optional<User> result = userDao.findById(userId);
         Assert.assertTrue(result.isPresent());
@@ -104,7 +97,7 @@ public class UserDaoTest {
 
     @Test
     public void testFindByEmail() {
-        final String email = saveSampleUser(u -> {}).getEmail();
+        final String email = saveSampleUser().getEmail();
 
         final Optional<User> result = userDao.findByEmail(email);
         Assert.assertTrue(result.isPresent());
@@ -171,7 +164,7 @@ public class UserDaoTest {
 
     @Test
     public void testExistsById() {
-        var userId = saveSampleUser(u -> {}).getId();
+        var userId = saveSampleUser().getId();
 
         final boolean result = userDao.existsById(userId);
 
@@ -179,13 +172,16 @@ public class UserDaoTest {
     }
 
     @Test
-    public void testCount() {
-        saveSampleUser(u -> {
-            u.setRegisteredAddress(warsawAddress);
-        });
-        saveSampleUser(u -> {
-            u.setRegisteredAddress(wroclawAddress);
-        });
+    public void testCountForNoData() {
+        final long result = userDao.count();
+
+        Assert.assertEquals(0, result);
+    }
+
+    @Test
+    public void testCountForExistingData() {
+        saveSampleUser(u -> u.setRegisteredAddress(warsawAddress));
+        saveSampleUser(u -> u.setRegisteredAddress(wroclawAddress));
 
         final long result = userDao.count();
 
@@ -194,7 +190,7 @@ public class UserDaoTest {
 
     @Test
     public void testDeleteById() {
-        Integer userId = saveSampleUser(u -> {}).getId();
+        Integer userId = saveSampleUser().getId();
 
         userDao.deleteById(userId);
 
@@ -203,7 +199,7 @@ public class UserDaoTest {
 
     @Test
     public void testDelete() {
-        saveSampleUser(u -> {});
+        saveSampleUser();
 
         final User existingUser = assertAndGetExactlyOneRecord();
         userDao.delete(existingUser);

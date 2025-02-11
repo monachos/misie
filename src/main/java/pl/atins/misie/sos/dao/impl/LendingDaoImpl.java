@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.LendingDao;
 import pl.atins.misie.sos.model.Lending;
+import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 
@@ -51,5 +52,14 @@ public class LendingDaoImpl implements LendingDao {
     @Override
     public Lending findById(Integer id) {
         return entityManager.find(Lending.class, id);
+    }
+
+    @Override
+    public long getCountByUser(User user) {
+        final String hql = "SELECT COUNT(L) FROM Lending L" +
+                " WHERE L.user = :user";
+        return entityManager.createQuery(hql, Long.class)
+                .setParameter("user", user)
+                .getSingleResult();
     }
 }

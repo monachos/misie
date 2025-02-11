@@ -6,6 +6,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import pl.atins.misie.sos.dao.ReservationDao;
 import pl.atins.misie.sos.model.Reservation;
+import pl.atins.misie.sos.model.User;
 
 import java.util.List;
 
@@ -47,5 +48,14 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public void deleteAll() {
         entityManager.createQuery("DELETE FROM Reservation").executeUpdate();
+    }
+
+    @Override
+    public List<Reservation> findByUser(User user) {
+        String hql = "SELECT r FROM Reservation r" +
+                " WHERE r.user = :user";
+        return entityManager.createQuery(hql, Reservation.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 }

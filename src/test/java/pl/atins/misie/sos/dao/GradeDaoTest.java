@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import pl.atins.misie.sos.dao.*;
 import pl.atins.misie.sos.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-test.xml"})
@@ -96,6 +96,16 @@ public class GradeDaoTest {
         return studentSubject;
     }
 
+    private StudentSubject createStudentSubject(Consumer<StudentSubject> customizationAction) {
+        StudentSubject studentSubject = new StudentSubject();
+        studentSubject.setStudent(createStudent());
+        studentSubject.setSubject(createSubject());
+        studentSubject.setRegistrationTime(LocalDateTime.of(2020, 5, 15, 12, 0));
+        customizationAction.accept(studentSubject);
+        studentSubjectDao.save(studentSubject);
+        return studentSubject;
+    }
+
     private Grade createGrade() {
         Grade grade = new Grade();
         grade.setStudentSubject(createStudentSubject());
@@ -154,5 +164,33 @@ public class GradeDaoTest {
         createGrade();
         gradeDao.deleteAll();
         Assert.assertEquals(0, gradeDao.findAll().size());
+    }
+
+    @Test
+    public void testFindByUserForNoData() {
+        createGrade();
+        createGrade();
+
+        final List<Grade> result = gradeDao.findByUser(createStudent());
+
+        Assert.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testFindByUserForExistingData() {
+        final User student = createStudent();
+        final var grade = new Grade();
+        grade.setStudentSubject(createStudentSubject(ss -> ss.setStudent(student)));
+        grade.setGrade(BigDecimal.valueOf(4.5));
+        grade.setType("SpecialExam");
+        grade.setGradingDate(LocalDateTime.of(2020, 5, 15, 12, 0));
+        gradeDao.save(grade);
+        createGrade();
+        createGrade();
+
+        final List<Grade> result = gradeDao.findByUser(student);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals("SpecialExam", result.get(0).getType());
     }
 }

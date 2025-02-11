@@ -11,6 +11,7 @@ import pl.atins.misie.sos.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
@@ -33,49 +34,23 @@ public class StudentSubjectDaoTest {
     @Autowired
     private DepartmentDao departmentDao;
 
-    private User createStudent() {
-        User student = new User();
-
-        String randomEmail = "student" + System.currentTimeMillis() + "@test.com";
-        student.setEmail(randomEmail);
-
-        student.setActive(true);
-        student.setDeleted(false);
-        student.setAcceptedPrivacyPolicy(true);
-        student.setAcceptedTermsOfUse(true);
-        student.setPassword("password123");
-        student.setName("Test");
-        student.setSurname("User");
-        student.setBlockedAccount(false);
-
+    private User createSampleUser(Consumer<User> customizationAction) {
         Address address = new Address();
         address.setAddressLine1("Test Street 123");
-
         addressDao.save(address);
 
-        student.setRegisteredAddress(address);
-        userDao.save(student);
-
-        return student;
+        final User user = SampleData.newUser(u -> {
+            u.setRegisteredAddress(address);
+            customizationAction.accept(u);
+        });
+        return userDao.save(user);
     }
 
     private Subject createSubject() {
-        Subject subject = new Subject();
-        subject.setTitle("Database Systems");
-        subject.setDescription("Introduction to Databases");
-        subject.setMaxStudents(30);
-        subject.setIsActive(true);
-        subject.setSemester("Spring");
-        subject.setAcademicYear(2024);
-        subject.setRegistrationStart(LocalDateTime.now().minusDays(10));
-        subject.setRegistrationEnd(LocalDateTime.now().plusDays(10));
-        subject.setRoomNumber("101");
-        subject.setTime(LocalDateTime.now().plusDays(5));
-
-        subject.setDepartment(createDepartment());
-
-        subjectDao.save(subject);
-        return subject;
+        final var subject = SampleData.newSubject(s -> {
+            s.setDepartment(createDepartment());
+        });
+        return subjectDao.save(subject);
     }
 
     private Department createDepartment() {
@@ -87,7 +62,7 @@ public class StudentSubjectDaoTest {
 
     private StudentSubject createStudentSubject() {
         StudentSubject studentSubject = new StudentSubject();
-        studentSubject.setStudent(createStudent());
+        studentSubject.setStudent(createSampleUser(u -> {}));
         studentSubject.setSubject(createSubject());
         studentSubject.setRegistrationTime(LocalDateTime.now());
 
@@ -147,5 +122,53 @@ public class StudentSubjectDaoTest {
 
         studentSubjectDao.deleteAll();
         Assert.assertEquals(0, studentSubjectDao.findAll().size());
+    }
+
+    @Test
+    public void testFindByStudent() {
+        final var mainStudent = createSampleUser(u -> {
+        });
+        for (int i = 0; i < 5; i++) {
+            final var studentSubject = new StudentSubject();
+            studentSubject.setStudent(mainStudent);
+            studentSubject.setSubject(createSubject());
+            studentSubject.setRegistrationTime(LocalDateTime.now());
+            studentSubjectDao.save(studentSubject);
+        }
+        final var otherStudent = createSampleUser(u -> {
+        });
+        for (int i = 0; i < 3; i++) {
+            final var studentSubject = new StudentSubject();
+            studentSubject.setStudent(otherStudent);
+            studentSubject.setSubject(createSubject());
+            studentSubject.setRegistrationTime(LocalDateTime.now());
+            studentSubjectDao.save(studentSubject);
+        }
+
+        final List<StudentSubject> result = studentSubjectDao.findByStudent(mainStudent);
+        Assert.assertEquals(5, result.size());
+    }
+
+    @Test
+    public void testFindBySubject() {
+        final var mainSubject = createSubject();
+        for (int i = 0; i < 5; i++) {
+            final var studentSubject = new StudentSubject();
+            studentSubject.setStudent(createSampleUser(u -> {}));
+            studentSubject.setSubject(mainSubject);
+            studentSubject.setRegistrationTime(LocalDateTime.now());
+            studentSubjectDao.save(studentSubject);
+        }
+        final var otherSubject = createSubject();
+        for (int i = 0; i < 3; i++) {
+            final var studentSubject = new StudentSubject();
+            studentSubject.setStudent(createSampleUser(u -> {}));
+            studentSubject.setSubject(otherSubject);
+            studentSubject.setRegistrationTime(LocalDateTime.now());
+            studentSubjectDao.save(studentSubject);
+        }
+
+        final List<StudentSubject> result = studentSubjectDao.findBySubject(mainSubject);
+        Assert.assertEquals(5, result.size());
     }
 }

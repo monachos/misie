@@ -35,22 +35,11 @@ public class LendingDaoTest {
     private AddressDaoImpl addressDao;
 
     private User createUser() {
-        User student = new User();
-        student.setEmail("student@test.com");
-        student.setActive(true);
-        student.setDeleted(false);
-        student.setAcceptedPrivacyPolicy(true);
-        student.setAcceptedTermsOfUse(true);
-        student.setPassword("password123");
-        student.setName("Test");
-        student.setSurname("User");
-        student.setBlockedAccount(false);
-
         Address address = new Address();
         address.setAddressLine1("Test Street 123");
         addressDao.save(address);
 
-        student.setRegisteredAddress(address);
+        User student = SampleData.newUser(u -> u.setRegisteredAddress(address));
         userDao.save(student);
 
         return student;
@@ -80,8 +69,8 @@ public class LendingDaoTest {
         Assert.assertEquals(1, lendings.size());
         Lending retrieved = lendings.get(0);
         Assert.assertEquals(LocalDateTime.of(2025, 5, 15, 12, 0), retrieved.getLendingDate());
-        Assert.assertEquals("Test", retrieved.getUser().getName());
-        Assert.assertEquals("User", retrieved.getUser().getSurname());
+        Assert.assertEquals("Jan", retrieved.getUser().getName());
+        Assert.assertEquals("Kowalski", retrieved.getUser().getSurname());
         Assert.assertEquals(Integer.valueOf(5), retrieved.getLibraryItem().getQuantity());
     }
 
@@ -99,8 +88,8 @@ public class LendingDaoTest {
         Lending retrievedLending = lendingDao.findById(lending.getId());
         Assert.assertNotNull(retrievedLending);
         Assert.assertEquals(LocalDateTime.of(2025, 6, 10, 10, 0), retrievedLending.getLendingDate());
-        Assert.assertEquals("Test", retrievedLending.getUser().getName());
-        Assert.assertEquals("User", retrievedLending.getUser().getSurname());
+        Assert.assertEquals("Jan", retrievedLending.getUser().getName());
+        Assert.assertEquals("Kowalski", retrievedLending.getUser().getSurname());
         Assert.assertEquals(Integer.valueOf(5), retrievedLending.getLibraryItem().getQuantity());
     }
 
@@ -157,5 +146,29 @@ public class LendingDaoTest {
 
         lendingDao.deleteAll();
         Assert.assertEquals(0, lendingDao.findAll().size());
+    }
+
+    @Test
+    public void testGetCountByUser() {
+        final User mainUser = createUser();
+        for (int i=0; i<3; ++i) {
+            final var lending = new Lending();
+            lending.setLendingDate(LocalDateTime.of(2025, 9, 1, 14, 0));
+            lending.setUser(mainUser);
+            lending.setLibraryItem(createAndSaveLibraryItem());
+            lendingDao.save(lending);
+        }
+        final User otherUser = createUser();
+        for (int i=0; i<6; ++i) {
+            final var lending = new Lending();
+            lending.setLendingDate(LocalDateTime.of(2025, 9, 1, 14, 0));
+            lending.setUser(otherUser);
+            lending.setLibraryItem(createAndSaveLibraryItem());
+            lendingDao.save(lending);
+        }
+
+        long result = lendingDao.getCountByUser(mainUser);
+
+        Assert.assertEquals(3, result);
     }
 }
