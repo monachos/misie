@@ -51,25 +51,11 @@ public class SubjectDaoTest {
         Assert.assertTrue(result.isEmpty());
     }
 
-    private Subject newSampleSubject(Consumer<Subject> customizationAction) {
-        final var subject = new Subject();
-        subject.setTime(LocalDateTime.of(2025, 1, 10, 15, 10, 0));
-        subject.setDescription("Sample description");
-        subject.setTitle("Algorytmy i struktury danych");
-        subject.setMaxStudents(12);
-        subject.setIsActive(true);
-        subject.setSemester("VI");
-        subject.setAcademicYear(2025);
-        subject.setRegistrationStart(LocalDateTime.of(2025, 3, 1, 9, 0, 0));
-        subject.setRegistrationEnd(LocalDateTime.of(2025, 3, 5, 17, 0, 0));
-        subject.setRoomNumber("3.11");
-        subject.setDepartment(mainDepartment);
-        customizationAction.accept(subject);
-        return subject;
-    }
-
     private Subject createSampleSubject(Consumer<Subject> customizationAction) {
-        final var subject = newSampleSubject(customizationAction);
+        final var subject = SampleData.newSubject(s -> {
+            s.setDepartment(mainDepartment);
+            customizationAction.accept(s);
+        });
         return subjectDao.save(subject);
     }
 

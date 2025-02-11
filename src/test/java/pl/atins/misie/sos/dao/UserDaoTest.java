@@ -69,21 +69,10 @@ public class UserDaoTest {
     }
 
     private User newSampleUser(Consumer<User> customizationAction) {
-        final User user = new User();
-        user.setStudentIdNumber("%s".formatted(UUID.randomUUID()));
-        user.setActive(true);
-        user.setDeleted(false);
-        user.setEmail("%s@example.com".formatted(UUID.randomUUID()));
-        user.setPassword("qwerty");
-        user.setPhone2fa("123456789");
-        user.setAcceptedPrivacyPolicy(true);
-        user.setAcceptedTermsOfUse(true);
-        user.setName("Jan");
-        user.setSurname("Kowalski");
-        user.setRegisteredAddress(warsawAddress);
-        user.setBlockedAccount(false);
-        customizationAction.accept(user);
-        return user;
+        return SampleData.newUser(u -> {
+            u.setRegisteredAddress(warsawAddress);
+            customizationAction.accept(u);
+        });
     }
 
     private User saveSampleUser(Consumer<User> customizationAction) {
