@@ -192,5 +192,7 @@ public class GradeDaoTest {
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals("SpecialExam", result.get(0).getType());
+        Assert.assertEquals(BigDecimal.valueOf(4.5), result.get(0).getGrade());
+
     }
 }
