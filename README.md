@@ -9,24 +9,27 @@ Projekt **Misie SOS** to aplikacja do zarządzania kontem studenta oraz bibliote
 - **JUnit & AssertJ** (testy jednostkowe)  
 - **Maven** (zarządzanie zależnościami)
 
- **Klonowanie repozytorium**:
-   git clone https://github.com/monachos/misie.git
-
 **Struktura katalogów**: 
 misie-sos
 - │── src
 - │   ├── main
 - │   │   ├── java/pl/atins/misie/sos
-- │   │   │   ├── dao          # Warstwa dostępu do bazy danych
-- │   │   │   ├── model        # Encje JPA
-- │   │   │   ├── service      # Logika biznesowa
-- │   │   │   ├── controller   # Kontrolery REST API
-- │   │   ├── resources
-- │   │   │   ├── applicationContext.xml  # Konfiguracja Springa
-- │   │   │   ├── web.xml  # Konfiguracja aplikacji webowej
+- │   │   │   ├── dao                                          # Warstwa dostępu do bazy danych
+- |   |   |   |   |-impl                                       # Implementacja DAO
+- │   │   │   ├── model                                        # Encje JPA
+- |   |   |   |── SosApplication
+- |   |   |── resources
+- |   |   |   |── application.properties
+- |   |   |   |── create-db.sql                                # skrypt inicjalizujący bazę danych 
+- │   │   ├── webapp/WEB-INF
+- │   │   │   |── applicationContext.xml                       # Konfiguracja Springa
+- |   |   |   ├── rootApplicationContext.xml                   # Konfiguracja Springa
+- │   │   │   ├── web.xml                                      # Konfiguracja aplikacji webowej
 - │   ├── test
-- │   │   ├── java/pl/atins/misie/sos/dao  # Testy DAO
-- │   │   ├── java/pl/atins/misie/sos/service  # Testy serwisów
+- │   │   ├── java                                             # Testy jednostkowe DAO
+- |   |   ├── resources/applicationContext-test.xml            # Konfiguracja Spring używana w testach
+│── pom.xml                                                    # Konfiguracja Maven
+│── .gitignore                                                 # Ignorowane pliki w repozytorium
 
 **Współtwórcy**:
 
