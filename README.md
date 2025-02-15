@@ -10,26 +10,29 @@ Projekt **Misie SOS** to aplikacja do zarządzania kontem studenta oraz bibliote
 - **Maven** (zarządzanie zależnościami)
 
 **Struktura katalogów**: 
+
+```
 misie-sos
-- │── src
-- │   ├── main
-- │   │   ├── java/pl/atins/misie/sos
-- │   │   │   ├── dao                                          # Warstwa dostępu do bazy danych
-- |   |   |   |   |-impl                                       # Implementacja DAO
-- │   │   │   ├── model                                        # Encje JPA
-- |   |   |   |── SosApplication
-- |   |   |── resources
-- |   |   |   |── application.properties
-- |   |   |   |── create-db.sql                                # skrypt inicjalizujący bazę danych 
-- │   │   ├── webapp/WEB-INF
-- │   │   │   |── applicationContext.xml                       # Konfiguracja Springa
-- |   |   |   ├── rootApplicationContext.xml                   # Konfiguracja Springa
-- │   │   │   ├── web.xml                                      # Konfiguracja aplikacji webowej
-- │   ├── test
-- │   │   ├── java                                             # Testy jednostkowe DAO
-- |   |   ├── resources/applicationContext-test.xml            # Konfiguracja Spring używana w testach
-│── pom.xml                                                    # Konfiguracja Maven
-│── .gitignore                                                 # Ignorowane pliki w repozytorium
+│── src
+│   ├── main
+│   │   ├── java/pl/atins/misie/sos
+│   │   │   ├── dao                                          # Warstwa dostępu do bazy danych
+|   |   |   |   |-impl                                       # Implementacja DAO
+│   │   │   ├── model                                        # Encje JPA
+|   |   |   |── SosApplication
+|   |   |── resources
+|   |   |   |── application.properties
+|   |   |   |── create-db.sql                                # skrypt inicjalizujący bazę danych 
+│   │   ├── webapp/WEB-INF
+│   │   │   |── applicationContext.xml                       # Konfiguracja Springa
+|   |   |   ├── rootApplicationContext.xml                   # Konfiguracja Springa
+│   │   │   ├── web.xml                                      # Konfiguracja aplikacji webowej
+│   ├── test
+│   │   ├── java                                             # Testy jednostkowe DAO
+|   |   ├── resources/applicationContext-test.xml            # Konfiguracja Spring używana w testach
+│── pom.xml                                                  # Konfiguracja Maven
+│── .gitignore                                               # Ignorowane pliki w repozytorium
+```
 
 **Współtwórcy**:
 
